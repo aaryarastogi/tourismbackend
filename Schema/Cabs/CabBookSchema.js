@@ -33,22 +33,6 @@ const cabBookSchema=new mongoose.Schema({
         type:String,
         required:false
     },
-    pickuptype:{
-        type:String,
-        required:false
-    },
-    airport:{
-        type:String,
-        required:false
-    },
-    pickupDate:{
-            type:String,
-            required:false
-    },
-    pickupLoc:{
-        type:String,
-        required:false
-    },
     packageValue:{
         type:String,
         required:false

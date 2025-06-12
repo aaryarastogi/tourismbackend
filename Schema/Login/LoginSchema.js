@@ -12,7 +12,7 @@ const LoginSchema=new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required: false,
     },
     phoneNumber:{
         type:Number,
@@ -28,26 +28,29 @@ const LoginSchema=new mongoose.Schema({
     ]
 })
 
-LoginSchema.methods.generateAuthToken=async function(){
-    try{
-        let token=jwt.sign(
-        {
-            user:{
-            _id:this._id , 
-            username:this.username , 
-            email:this.email
-            }
-        },"mynameisaaryarastogiiamamernstackdeveloper",{expiresIn:'24h'})
-        console.log("token",this.username);
-        this.tokens=[];
-        this.tokens=this.tokens.concat({token:token})
+LoginSchema.methods.generateAuthToken = async function() {
+    try {
+        const token = jwt.sign(
+            {
+                user: {
+                    _id: this._id,
+                    username: this.username,
+                    email: this.email
+                }
+            },
+            "mynameisaaryarastogiiamamernstackdeveloper",
+            { expiresIn: '7d' }
+        );
+
+        this.tokens = this.tokens || [];
+        this.tokens = this.tokens.concat({ token: token });
         await this.save();
         return token;
+    } catch (e) {
+        console.log("Generate auth token failed", e);
+        throw e; // Rethrow the error to handle it in the calling function
     }
-    catch(e){
-        console.log("generate auth token failed",e);
-    }
-}
+};
 
 
 const collection=mongoose.model("collections",LoginSchema)
